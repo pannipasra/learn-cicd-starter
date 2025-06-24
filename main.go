@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
@@ -23,6 +24,9 @@ type apiConfig struct {
 
 //go:embed static/*
 var staticFiles embed.FS
+
+// Global TIMEOUT parameter for 50 seconds
+var TIMEOUT time.Duration = time.Second * 50
 
 func main() {
 	err := godotenv.Load(".env")
@@ -89,8 +93,9 @@ func main() {
 
 	router.Mount("/v1", v1Router)
 	srv := &http.Server{
-		Addr:    ":" + port,
-		Handler: router,
+		Addr:              ":" + port,
+		Handler:           router,
+		ReadHeaderTimeout: TIMEOUT,
 	}
 
 	log.Printf("Serving on port: %s\n", port)
