@@ -13,11 +13,11 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
+      - name: Go Version
+        run: go version
+
       - name: Run Tests
         run: go test ./... -cover
-
-      - name: Force Failure
-        run: go version
   
   style:
     name: Style
